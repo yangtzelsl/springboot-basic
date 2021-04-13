@@ -4,15 +4,22 @@ import com.yangtzelsl.security.authentication.MyAuthenctiationFailureHandler;
 import com.yangtzelsl.security.authentication.MyAuthenticationSuccessHandler;
 import com.yangtzelsl.security.authentication.MyLogoutSuccessHandler;
 import com.yangtzelsl.security.authentication.RestAuthenticationAccessDeniedHandler;
+import org.springframework.context.annotation.Configuration;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.context.annotation.Bean;
-import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
+import org.springframework.security.core.Authentication;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
+import org.springframework.security.web.authentication.logout.LogoutSuccessHandler;
+
+import javax.servlet.ServletException;
+import javax.servlet.http.HttpServletRequest;
+import javax.servlet.http.HttpServletResponse;
+import java.io.IOException;
 
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -42,11 +49,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/xadmin/**",
                         "/ztree/**",
                         "/statics/**"
-                )
+                        )
                 .permitAll()
                 .anyRequest()
                 .authenticated()
-        ;
+                ;
         //解决X-Frame-Options DENY问题
         httpSecurity.headers().frameOptions().sameOrigin();
         httpSecurity.formLogin()
@@ -54,7 +61,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .loginProcessingUrl("/login")
                 .successHandler(myAuthenticationSuccessHandler)
                 .failureHandler(myAuthenctiationFailureHandler)
-                .and().logout().permitAll().invalidateHttpSession(true).
+        .and().logout().permitAll().invalidateHttpSession(true).
                 deleteCookies("JSESSIONID").logoutSuccessHandler(myLogoutSuccessHandler)
         ;
         //异常处理
