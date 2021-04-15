@@ -2,8 +2,12 @@ package com.yangtzelsl.dao;
 
 import com.yangtzelsl.model.SysRole;
 import org.apache.ibatis.annotations.*;
+
 import java.util.List;
 
+/**
+ * @author luis.liu
+ */
 @Mapper
 public interface RoleDao {
 
@@ -14,7 +18,7 @@ public interface RoleDao {
     Long countAllRoles();
 
     @Select("select * from sys_role t limit #{startPosition}, #{limit}")
-    List<SysRole> getAllRolesByPage(@Param("startPosition")Integer startPosition, @Param("limit")Integer limit);
+    List<SysRole> getAllRolesByPage(@Param("startPosition") Integer startPosition, @Param("limit") Integer limit);
 
     @Options(useGeneratedKeys = true, keyProperty = "id")
     @Insert("insert into sys_role(name, description, createTime, updateTime) values(#{name}, #{description}, now(), now())")
@@ -34,6 +38,6 @@ public interface RoleDao {
     Long countRoleByFuzzyRoleName(@Param("roleName") String roleName);
 
     @Select("select * from sys_role t where t.name like '%${roleName}%' limit #{startPosition},#{limit}")
-    List<SysRole> getRoleByFuzzyRoleNamePage(@Param("roleName") String roleName,@Param("startPosition")Integer startPosition,@Param("limit")Integer limit);
+    List<SysRole> getRoleByFuzzyRoleNamePage(@Param("roleName") String roleName, @Param("startPosition") Integer startPosition, @Param("limit") Integer limit);
 
 }

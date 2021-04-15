@@ -8,6 +8,9 @@ import org.apache.ibatis.annotations.Select;
 
 import java.util.List;
 
+/**
+ * @author luis.liu
+ */
 @Mapper
 public interface RoleUserDao {
     @Insert("insert into sys_role_user(userId, roleId) values(#{userId}, #{roleId})")
