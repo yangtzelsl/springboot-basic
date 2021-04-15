@@ -1,11 +1,10 @@
 package com.yangtzelsl.security;
 
-import com.yangtzelsl.security.authentication.MyAuthenctiationFailureHandler;
+import com.yangtzelsl.security.authentication.MyAuthentiationFailureHandler;
 import com.yangtzelsl.security.authentication.MyAuthenticationSuccessHandler;
 import com.yangtzelsl.security.authentication.MyLogoutSuccessHandler;
 import com.yangtzelsl.security.authentication.RestAuthenticationAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
-import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -16,9 +15,15 @@ import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
 import org.springframework.security.crypto.password.PasswordEncoder;
 
 /**
- * 处理用户信息获取逻辑 UserDetailsService
- * 处理用户校验逻辑 UserDetails
- * 处理密码加密解密逻辑 PasswordEncoder
+ * 自定义用户认证逻辑
+ *   1.处理用户信息获取逻辑 UserDetailsService
+ *   2.处理用户校验逻辑 UserDetails
+ *   3.处理密码加密解密逻辑 PasswordEncoder
+ *
+ * 自定义用户验证流程
+ *   1.自定义登录页面 /login.html
+ *   2.自定义登录成功处理 MyAuthenticationSuccessHandler
+ *   3.自定义登录失败处理 MyAuthenctiationFailureHandler
  */
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
@@ -31,7 +36,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
     private MyAuthenticationSuccessHandler myAuthenticationSuccessHandler;
 
     @Autowired
-    private MyAuthenctiationFailureHandler myAuthenctiationFailureHandler;
+    private MyAuthentiationFailureHandler myAuthenctiationFailureHandler;
 
     @Autowired
     private RestAuthenticationAccessDeniedHandler restAuthenticationAccessDeniedHandler;
@@ -68,12 +73,20 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         //解决X-Frame-Options DENY问题
         httpSecurity.headers().frameOptions().sameOrigin();
         httpSecurity.formLogin()
+                // 指定自定义登录页面
                 .loginPage("/login.html")
+                // 指定默认的拦截URL处理地址
                 .loginProcessingUrl("/login")
+                // 成功怎么处理
                 .successHandler(myAuthenticationSuccessHandler)
+                // 失败怎么处理
                 .failureHandler(myAuthenctiationFailureHandler)
-                .and().logout().permitAll().invalidateHttpSession(true).
-                deleteCookies("JSESSIONID").logoutSuccessHandler(myLogoutSuccessHandler)
+                .and()
+                .logout()
+                .permitAll()
+                .invalidateHttpSession(true)
+                .deleteCookies("JSESSIONID")
+                .logoutSuccessHandler(myLogoutSuccessHandler)
         ;
         //异常处理
         httpSecurity.exceptionHandling().accessDeniedHandler(restAuthenticationAccessDeniedHandler);

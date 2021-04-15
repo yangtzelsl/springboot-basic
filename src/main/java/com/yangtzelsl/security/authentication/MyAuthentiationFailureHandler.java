@@ -16,10 +16,13 @@ import java.io.IOException;
 import java.util.HashMap;
 import java.util.Map;
 
+/**
+ * @author luis.liu
+ */
 @Component
 @Slf4j
 //public class MyAuthenctiationFailureHandler implements AuthenticationFailureHandler {
-public class MyAuthenctiationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
+public class MyAuthentiationFailureHandler extends SimpleUrlAuthenticationFailureHandler {
 
     @Autowired
     private ObjectMapper objectMapper;
