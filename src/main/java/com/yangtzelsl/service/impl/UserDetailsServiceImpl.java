@@ -20,6 +20,8 @@ import java.util.List;
 
 /**
  * spring security登陆处理<br>
+ *
+ * @author luis.liu
  */
 
 @Service
@@ -31,6 +33,13 @@ public class UserDetailsServiceImpl implements UserDetailsService {
     @Autowired
     private PermissionDao permissionDao;
 
+    /**
+     * 实现用户自定义的验证逻辑
+     *
+     * @param username
+     * @return
+     * @throws UsernameNotFoundException
+     */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
         SysUser sysUser = userService.getUser(username);

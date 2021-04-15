@@ -3,6 +3,9 @@ package com.yangtzelsl.controller;
 import org.springframework.stereotype.Controller;
 import org.springframework.web.bind.annotation.GetMapping;
 
+/**
+ * @author luis.liu
+ */
 @Controller
 public class SecurityController {
 

@@ -12,11 +12,7 @@ import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.security.access.prepost.PreAuthorize;
 import org.springframework.stereotype.Controller;
 import org.springframework.ui.Model;
-import org.springframework.util.CollectionUtils;
 import org.springframework.web.bind.annotation.*;
-
-import java.util.List;
-import java.util.stream.Collectors;
 
 @Controller
 @RequestMapping("permission")
@@ -46,14 +42,14 @@ public class PermissionController {
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:menu:query')")
     @ApiOperation(value = "获取所有权限值", notes = "获取所有菜单的权限值")//描述
-    public Results getMenuAll(){
+    public Results getMenuAll() {
         return permissionService.getMenuAll();
     }
 
     @RequestMapping(value = "/add", method = RequestMethod.GET)
     @ApiOperation(value = "新增页面", notes = "跳转到菜单信息新增页面")//描述
     public String addPermission(Model model) {
-        model.addAttribute("sysPermission",new SysPermission());
+        model.addAttribute("sysPermission", new SysPermission());
         return "permission/permission-add";
     }
 
@@ -69,7 +65,7 @@ public class PermissionController {
     @RequestMapping(value = "/edit", method = RequestMethod.GET)
     @ApiOperation(value = "编辑页面", notes = "跳转到菜单信息编辑页面")//描述
     public String editPermission(Model model, SysPermission permission) {
-        model.addAttribute("sysPermission",permissionService.getSysPermissionById(permission.getId()));
+        model.addAttribute("sysPermission", permissionService.getSysPermissionById(permission.getId()));
         return "permission/permission-add";
     }
 
@@ -78,7 +74,7 @@ public class PermissionController {
     @PreAuthorize("hasAuthority('sys:menu:edit')")
     @ApiOperation(value = "更新菜单信息", notes = "保存用户编辑完的菜单信息")//描述
     @ApiImplicitParam(name = "sysPermission", value = "菜单权限实体sysPermission", required = true, dataType = "SysPermission")
-    public Results updatePermission(@RequestBody  SysPermission permission) {
+    public Results updatePermission(@RequestBody SysPermission permission) {
         return permissionService.updateSysPermission(permission);
     }
 

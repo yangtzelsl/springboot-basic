@@ -5,6 +5,7 @@ import com.yangtzelsl.security.authentication.MyAuthenticationSuccessHandler;
 import com.yangtzelsl.security.authentication.MyLogoutSuccessHandler;
 import com.yangtzelsl.security.authentication.RestAuthenticationAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
@@ -22,6 +23,7 @@ import org.springframework.security.crypto.password.PasswordEncoder;
 @Configuration
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
+    //@Qualifier("userDetailsServiceImpl")
     @Autowired
     private UserDetailsService userDetailsService;
 
@@ -56,6 +58,7 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                         "/xadmin/**",
                         "/ztree/**",
                         "/statics/**"
+//                        "/templates/**"
                 )
                 .permitAll()
                 // 任何请求都要通过权限验证
@@ -76,6 +79,11 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
         httpSecurity.exceptionHandling().accessDeniedHandler(restAuthenticationAccessDeniedHandler);
     }
 
+    /**
+     * 使用的BCrypt加密/解密方式，类似的还有MD5等
+     *
+     * @return
+     */
     @Bean
     public PasswordEncoder passwordEncoder() {
         return new BCryptPasswordEncoder();

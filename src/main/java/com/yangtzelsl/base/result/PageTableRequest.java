@@ -7,6 +7,8 @@ import java.io.Serializable;
 
 /**
  * 分页查询参数
+ *
+ * @author luis.liu
  */
 @Slf4j
 @Data
@@ -18,11 +20,11 @@ public class PageTableRequest implements Serializable {
     private Integer offset;
 
     public void countOffset() {
-		if (null == this.page || null == this.limit) {
+        if (null == this.page || null == this.limit) {
             this.offset = 0;
             return;
         }
-		this.offset = (this.page - 1) * this.limit;
+        this.offset = (this.page - 1) * this.limit;
     }
 
     @Override

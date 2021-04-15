@@ -5,6 +5,7 @@ import java.io.Serializable;
 
 /**
  * Restful方式登陆token
+ * @author luis.liu
  */
 @Data
 public class Token implements Serializable {

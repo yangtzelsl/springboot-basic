@@ -17,43 +17,47 @@ import org.springframework.ui.Model;
 import org.springframework.web.bind.WebDataBinder;
 import org.springframework.web.bind.annotation.*;
 import org.springframework.web.context.request.WebRequest;
+
 import java.text.SimpleDateFormat;
 import java.util.Date;
 
+/**
+ * @author luis.liu
+ */
 @Controller
 @RequestMapping("role")
 @Slf4j
 public class RoleController {
 
-	@Autowired
-	private RoleService roleService;
+    @Autowired
+    private RoleService roleService;
 
-	@GetMapping("/all")
-	@ResponseBody
+    @GetMapping("/all")
+    @ResponseBody
     @ApiOperation(value = "获取所有角色", notes = "获取所有角色信息")//描述
-	public Results<SysRole> getAll() {
-		return roleService.getAllRoles();
-	}
+    public Results<SysRole> getAll() {
+        return roleService.getAllRoles();
+    }
 
-	@GetMapping("/list")
-	@ResponseBody
+    @GetMapping("/list")
+    @ResponseBody
     @PreAuthorize("hasAuthority('sys:role:query')")
     @ApiOperation(value = "分页获取角色", notes = "用户分页获取角色信息")//描述
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "page", required = true,dataType = "Integer"),
-            @ApiImplicitParam(name = "limit", required = true,dataType = "Integer"),
+            @ApiImplicitParam(name = "page", required = true, dataType = "Integer"),
+            @ApiImplicitParam(name = "limit", required = true, dataType = "Integer"),
     })
-	public Results list(PageTableRequest request) {
-		log.info("RoleController.list(): param ( request = " + request +" )");
-		request.countOffset();
-		return roleService.getAllRolesByPage(request.getOffset(), request.getLimit());
-	}
+    public Results list(PageTableRequest request) {
+        log.info("RoleController.list(): param ( request = " + request + " )");
+        request.countOffset();
+        return roleService.getAllRolesByPage(request.getOffset(), request.getLimit());
+    }
 
     @GetMapping(value = "/add")
     @PreAuthorize("hasAuthority('sys:role:add')")
     @ApiOperation(value = "新增角色信息页面", notes = "跳转到角色信息新增页面")//描述
     public String addRole(Model model) {
-        model.addAttribute("sysRole",new SysRole());
+        model.addAttribute("sysRole", new SysRole());
         return "role/role-add";
     }
 
@@ -61,16 +65,16 @@ public class RoleController {
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:role:add')")
     @ApiOperation(value = "保存角色信息", notes = "保存新增的角色信息")//描述
-    @ApiImplicitParam(name = "roleDto",value = "角色信息实体类", required = true,dataType = "RoleDto")
+    @ApiImplicitParam(name = "roleDto", value = "角色信息实体类", required = true, dataType = "RoleDto")
     public Results saveRole(@RequestBody RoleDto roleDto) {
         return roleService.save(roleDto);
     }
 
     @GetMapping(value = "/edit")
     @ApiOperation(value = "编辑角色信息页面", notes = "跳转到角色信息编辑页面")//描述
-    @ApiImplicitParam(name = "role",value = "角色信息实体类", required = true,dataType = "SysRole")
+    @ApiImplicitParam(name = "role", value = "角色信息实体类", required = true, dataType = "SysRole")
     public String editRole(Model model, SysRole role) {
-        model.addAttribute("sysRole",roleService.getRoleById(role.getId()));
+        model.addAttribute("sysRole", roleService.getRoleById(role.getId()));
         return "role/role-edit";
     }
 
@@ -78,7 +82,7 @@ public class RoleController {
     @ResponseBody
     @PreAuthorize("hasAuthority('sys:role:edit')")
     @ApiOperation(value = "保存角色信息", notes = "保存被编辑的角色信息")//描述
-    @ApiImplicitParam(name = "roleDto",value = "角色信息实体类", required = true,dataType = "RoleDto")
+    @ApiImplicitParam(name = "roleDto", value = "角色信息实体类", required = true, dataType = "RoleDto")
     public Results updateRole(@RequestBody RoleDto roleDto) {
         return roleService.update(roleDto);
     }
@@ -92,6 +96,7 @@ public class RoleController {
     }
 
     String pattern = "yyyy-MM-dd";
+
     //只需要加上下面这段即可，注意不能忘记注解
     @InitBinder
     public void initBinder(WebDataBinder binder, WebRequest request) {
@@ -103,11 +108,11 @@ public class RoleController {
     @PreAuthorize("hasAuthority('sys:role:query')")
     @ApiOperation(value = "模糊查询角色信息", notes = "模糊搜索查询角色信息")//描述
     @ApiImplicitParams({
-            @ApiImplicitParam(name = "roleName",value = "模糊搜索的角色名", required = true),
+            @ApiImplicitParam(name = "roleName", value = "模糊搜索的角色名", required = true),
     })
     public Results findRoleByFuzzyRoleName(PageTableRequest requests, String roleName) {
         requests.countOffset();
-        return roleService.getRoleByFuzzyRoleNamePage(roleName,requests.getOffset(),requests.getLimit());
+        return roleService.getRoleByFuzzyRoleNamePage(roleName, requests.getOffset(), requests.getLimit());
     }
 
 }

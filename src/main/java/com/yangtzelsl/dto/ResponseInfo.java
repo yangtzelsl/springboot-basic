@@ -4,6 +4,9 @@ import lombok.Data;
 
 import java.io.Serializable;
 
+/**
+ * @author luis.liu
+ */
 @Data
 public class ResponseInfo implements Serializable {
 
