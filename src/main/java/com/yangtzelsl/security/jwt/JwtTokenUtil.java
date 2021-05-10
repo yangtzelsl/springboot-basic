@@ -38,10 +38,19 @@ public class JwtTokenUtil implements Serializable {
     private Clock clock = DefaultClock.INSTANCE;
 
     public String generateToken(UserDetails userDetails) {
+        // payload中存放的内容，例如用户名，用户头像等，当前为空
         Map<String, Object> claims = new HashMap<>();
+
         return doGenerateToken(claims, userDetails.getUsername());
     }
 
+    /**
+     * 生成jwt的token
+     *
+     * @param claims
+     * @param subject
+     * @return
+     */
     private String doGenerateToken(Map<String, Object> claims, String subject) {
         final Date createdDate = clock.now();
         final Date expirationDate = calculateExpirationDate(createdDate);
@@ -55,10 +64,23 @@ public class JwtTokenUtil implements Serializable {
                 .compact();
     }
 
+    /**
+     * 计算超时时间
+     *
+     * @param createdDate
+     * @return
+     */
     private Date calculateExpirationDate(Date createdDate) {
         return new Date(createdDate.getTime() + expiration);
     }
 
+    /**
+     * 验证token
+     *
+     * @param token
+     * @param userDetails
+     * @return
+     */
     public Boolean validateToken(String token, UserDetails userDetails) {
         LoginUser user = (LoginUser) userDetails;
         final String username = getUsernameFromToken(token);
@@ -67,6 +89,12 @@ public class JwtTokenUtil implements Serializable {
         );
     }
 
+    /**
+     * 从token中获取用户名
+     *
+     * @param token
+     * @return
+     */
     public String getUsernameFromToken(String token) {
         return getClaimFromToken(token, Claims::getSubject);
     }

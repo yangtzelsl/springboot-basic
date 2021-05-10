@@ -40,10 +40,21 @@ public class HelloController {
 
     }
 
+    /**
+     * 用户登录操作
+     * @param sysUser
+     * @param request
+     * @return
+     */
     @PostMapping("/login")
     public String login(@RequestBody SysUser sysUser, HttpServletRequest request){
+        // 1.验证账号密码 UserDetailsService
         final UserDetails userDetails = userDetailsService.loadUserByUsername(sysUser.getUsername());
+
+        // 2.账号密码如果验证成功，生成jwt返回给客户端
         final String token = jwtTokenUtil.generateToken(userDetails);
+
+        // 3.返回jwt给客户端（移动app，浏览器，微信小程序等）
         return token;
     }
 }
