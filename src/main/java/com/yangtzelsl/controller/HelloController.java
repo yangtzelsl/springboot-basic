@@ -1,7 +1,7 @@
 package com.yangtzelsl.controller;
 
 import com.yangtzelsl.model.SysUser;
-import com.yangtzelsl.security.JwtTokenUtil;
+import com.yangtzelsl.security.jwt.JwtTokenUtil;
 import lombok.extern.slf4j.Slf4j;
 import org.springframework.beans.factory.annotation.Autowired;
 import org.springframework.beans.factory.annotation.Qualifier;

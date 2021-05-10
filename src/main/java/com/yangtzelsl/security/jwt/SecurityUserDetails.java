@@ -1,4 +1,4 @@
-package com.yangtzelsl.security;
+package com.yangtzelsl.security.jwt;
 
 import com.yangtzelsl.model.SysUser;
 import lombok.Data;

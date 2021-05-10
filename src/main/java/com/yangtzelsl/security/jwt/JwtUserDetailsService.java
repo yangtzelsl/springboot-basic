@@ -1,4 +1,4 @@
-package com.yangtzelsl.security;
+package com.yangtzelsl.security.jwt;
 
 import org.springframework.security.core.GrantedAuthority;
 import org.springframework.security.core.authority.SimpleGrantedAuthority;
