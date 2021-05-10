@@ -42,6 +42,8 @@ public class UserDetailsServiceImpl implements UserDetailsService {
      */
     @Override
     public UserDetails loadUserByUsername(String username) throws UsernameNotFoundException {
+
+        // 1.根据该用户名查询在数据库中是否存在
         SysUser sysUser = userService.getUser(username);
         if (sysUser == null) {
             throw new AuthenticationCredentialsNotFoundException("用户名不存在");
@@ -54,8 +56,11 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         LoginUser loginUser = new LoginUser();
         BeanUtils.copyProperties(sysUser, loginUser);
 
+        // 2.存在则查询对应的用户权限
         // TODO 实际生产操作即从DB获取用户，权限
         List<SysPermission> permissions = permissionDao.listByUserId(sysUser.getId());
+
+        // 3.将该权限添加到security
         loginUser.setPermissions(permissions);
 
         return loginUser;

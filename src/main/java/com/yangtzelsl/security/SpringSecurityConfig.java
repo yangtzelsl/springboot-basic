@@ -75,6 +75,9 @@ public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
                 .anyRequest()
                 .authenticated()
         ;
+
+        // TODO 动态查询数据库给访问的请求赋权限（即动态绑定数据库赋予所有权限）
+
         //解决X-Frame-Options DENY问题
         httpSecurity.headers().frameOptions().sameOrigin();
         httpSecurity
