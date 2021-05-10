@@ -5,10 +5,13 @@ import com.yangtzelsl.security.authentication.MyAuthenticationSuccessHandler;
 import com.yangtzelsl.security.authentication.MyLogoutSuccessHandler;
 import com.yangtzelsl.security.authentication.RestAuthenticationAccessDeniedHandler;
 import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.beans.factory.annotation.Qualifier;
 import org.springframework.context.annotation.Bean;
 import org.springframework.context.annotation.Configuration;
 import org.springframework.security.config.annotation.authentication.builders.AuthenticationManagerBuilder;
+import org.springframework.security.config.annotation.method.configuration.EnableGlobalMethodSecurity;
 import org.springframework.security.config.annotation.web.builders.HttpSecurity;
+import org.springframework.security.config.annotation.web.configuration.EnableWebSecurity;
 import org.springframework.security.config.annotation.web.configuration.WebSecurityConfigurerAdapter;
 import org.springframework.security.core.userdetails.UserDetailsService;
 import org.springframework.security.crypto.bcrypt.BCryptPasswordEncoder;
@@ -26,9 +29,11 @@ import org.springframework.security.crypto.password.PasswordEncoder;
  *   3.自定义登录失败处理 MyAuthenctiationFailureHandler
  */
 @Configuration
+@EnableWebSecurity// 这个注解必须加，开启Security
+@EnableGlobalMethodSecurity(prePostEnabled = true)//保证post之前的注解可以使用
 public class SpringSecurityConfig extends WebSecurityConfigurerAdapter {
 
-    //@Qualifier("userDetailsServiceImpl")
+    @Qualifier("userDetailsServiceImpl")
     @Autowired
     private UserDetailsService userDetailsService;
 

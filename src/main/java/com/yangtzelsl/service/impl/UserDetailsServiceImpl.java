@@ -54,6 +54,7 @@ public class UserDetailsServiceImpl implements UserDetailsService {
         LoginUser loginUser = new LoginUser();
         BeanUtils.copyProperties(sysUser, loginUser);
 
+        // TODO 实际生产操作即从DB获取用户，权限
         List<SysPermission> permissions = permissionDao.listByUserId(sysUser.getId());
         loginUser.setPermissions(permissions);
 
