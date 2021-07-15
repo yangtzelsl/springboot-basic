@@ -34,6 +34,14 @@ spring:
     # 通过connectProperties属性来打开mergeSql功能；慢SQL记录
     connectionProperties: druid.stat.mergeSql=true;druid.stat.slowSqlMillis=5000
 
+  # 机器人告警
+  dinger:
+    project-id: ${spring.application.name}
+    dingers:
+      # 使用企业微信机器人, 请根据自己机器人配置信息进行修改
+      wetalk:
+        token-id: abc335a5-5795-409d-bb8b-61c1b72a79b7
+
 # mybatis相关配置
 mybatis:
   type-aliases-package: com.yangtze.model
